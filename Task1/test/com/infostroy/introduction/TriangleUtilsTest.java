@@ -1,25 +1,49 @@
 package com.infostroy.introduction;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 
 import org.junit.Test;
 
-import com.infostroy.introduction.TriangleUtils;
-
 public class TriangleUtilsTest {
 
-    @Test
-    public void testIsTriangle() {
-        assertTrue(new TriangleUtils().isTriangle(5, 5, 6));
-        assertFalse(new TriangleUtils().isTriangle(1, 2, 1));
-    }
+	private TriangleUtils triangleUtils = new TriangleUtils();
 
-    @Test
-    public void testGetTriangleArea() {
-        assertEquals(12, new TriangleUtils().getTriangleArea(5, 5, 6), 0.1);
-        assertEquals(0, new TriangleUtils().getTriangleArea(1, 2, 1), 0.1);
-    }
+	@Test
+	public void testIsTriangle() {
+
+		Map<Object, Boolean> results = new HashMap<Object, Boolean>() {
+			{
+				put(Arrays.asList(2, 2, 2), true);
+				put(Arrays.asList(2, 2, 3), true);
+				// put(Arrays.asList(0, 1, 2), false); First error!!!
+				put(Arrays.asList(1, 1, 2), false);
+				put(Arrays.asList(1, 2, 3), false);
+			}
+		};
+
+		for (Entry<Object, Boolean> entry : results.entrySet()) {
+			List<Integer> params = (List<Integer>) entry.getKey();
+			boolean expected = (boolean) entry.getValue();
+			boolean actual = triangleUtils.isTriangle(params.get(0), params.get(1), params.get(2));
+			String message = "Неправильный ответ для " + params;
+			assertEquals(message, expected, actual);
+		}
+	}
+
+	@Test(expected = IllegalArgumentException.class)
+	public void testIsTriangleWithZeroArguments() {
+		triangleUtils.isTriangle(0, 0, 0);
+	}
+
+	@Test(expected = IllegalArgumentException.class)
+	public void testIsTriangleWithNegativeArguments() {
+		triangleUtils.isTriangle(-1, -2, 3);
+	}
 
 }
