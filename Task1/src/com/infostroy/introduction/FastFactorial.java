@@ -2,18 +2,18 @@ package com.infostroy.introduction;
 
 public class FastFactorial {
 
-    private static long prodTree(long l, long r) {
-        if (l > r) {
+    private static long prodTree(long left, long right) {
+        if (left > right) {
             return 1L;
         }
-        if (l == r) {
-            return l;
+        if (left == right) {
+            return left;
         }
-        if (r - l == 1) {
-            return (l * r);
+        if (right - left == 1) {
+            return (left * right);
         }
-        long m = (l + r) / 2;
-        return prodTree(l, m) * prodTree(m + 1, r);
+        long m = (left + right) / 2;
+        return prodTree(left, m) * prodTree(m + 1, right);
     }
 
     public static long factorial(long number) {
