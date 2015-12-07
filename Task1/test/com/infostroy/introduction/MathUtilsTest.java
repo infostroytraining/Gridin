@@ -1,43 +1,94 @@
 package com.infostroy.introduction;
 
+import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
 
 import org.junit.Test;
 
-import com.infostroy.introduction.MathUtils;
-
 public class MathUtilsTest {
 
-    @Test
-    public void testGetGreatestCommonDivider() {
-        assertEquals(1, new MathUtils().getGreatestCommonDivider(2, 3));
-    }
+	private MathUtils mathUtils = new MathUtils();
 
-    @Test
-    public void testGetSumOfDigits() {
-        assertEquals(45, new MathUtils().getSumOfDigits(123456789));
-    }
+	@Test
+	public void testGetCommonDivider() {
+		assertEquals(3, mathUtils.getGreatestCommonDivider(6, 9));
+		assertEquals(5, mathUtils.getGreatestCommonDivider(10, 5));
+		assertEquals(6, mathUtils.getGreatestCommonDivider(18, 30));
+		assertEquals(0, mathUtils.getGreatestCommonDivider(0, 0));
+		assertEquals(1, mathUtils.getGreatestCommonDivider(1, 1));
+		assertNotEquals(0, mathUtils.getGreatestCommonDivider(1, 1));
+		assertNotEquals(5, mathUtils.getGreatestCommonDivider(5, 1));
+	}
 
-    @Test
-    public void testIsPrime() {
-        assertTrue(new MathUtils().isPrime(2));
-    }
+	@Test(expected = IllegalArgumentException.class)
+	public void testGetCommonDividerWithNegativeArguments() {
+		mathUtils.getGreatestCommonDivider(-5, -3);
+	}
 
-    @Test
-    public void testGetSumOfRow() {
-        System.out.println(new MathUtils().getSumOfRow(5));
-    }
+	@Test
+	public void testGetSumOfDigits() {
+		assertEquals(6, mathUtils.getSumOfDigits(123));
+		assertEquals(1, mathUtils.getSumOfDigits(10000000));
+		assertEquals(0, mathUtils.getSumOfDigits(0));
+		assertEquals(10, mathUtils.getSumOfDigits(55));
+		assertNotEquals(0, mathUtils.getSumOfDigits(111));
+		assertNotEquals(1, mathUtils.getSumOfDigits(101));
+	}
 
-    @Test
-    public void testGetFibonacciSeries() {
-        fail("Not yet implemented");
-    }
+	@Test(expected = IllegalArgumentException.class)
+	public void testGetSumOfDigitsWithNegativeArguments() {
+		mathUtils.getSumOfDigits(-55);
+	}
 
-    @Test
-    public void testGetPrimeSeries() {
-        fail("Not yet implemented");
-    }
+	@Test
+	public void testIsPrime() {
+		assertTrue(mathUtils.isPrime(3));
+		assertTrue(mathUtils.isPrime(151));
+		assertFalse(mathUtils.isPrime(15));
+		assertFalse(mathUtils.isPrime(20));
+	}
 
+	@Test(expected = IllegalArgumentException.class)
+	public void testIsPrimeWithNegativeArguments() {
+		mathUtils.isPrime(-2);
+	}
+
+	@Test
+	public void testGetSumOfRow() {
+		assertEquals(5, mathUtils.getSumOfRow(3));
+		assertEquals(-19, mathUtils.getSumOfRow(4));
+	}
+
+	@Test(expected = IllegalArgumentException.class)
+	public void testGetSumOfRowWithNegativeArguments() {
+		mathUtils.getSumOfRow(-4);
+	}
+
+	@Test
+	public void testGetFibonacciSeries() {
+		assertArrayEquals(new int[] { 1, 1, 2, 3, 5 }, mathUtils.getFibonacciSeries(5));
+		assertArrayEquals(new int[] {}, mathUtils.getFibonacciSeries(0));
+		assertArrayEquals(new int[] { 1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 144, 233 },
+				mathUtils.getFibonacciSeries(13));
+	}
+
+	@Test(expected = IllegalArgumentException.class)
+	public void testGetFibonacciSeriesWithNegativeArguments() {
+		mathUtils.getFibonacciSeries(-13);
+	}
+
+	@Test
+	public void testGetPrimeSeries() {
+		assertArrayEquals(new int[] { 2, 3, 5, 7, 11, }, mathUtils.getPrimeSeries(5));
+		assertArrayEquals(new int[] {}, mathUtils.getPrimeSeries(0));
+		assertArrayEquals(new int[] { 2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41 }, mathUtils.getPrimeSeries(13));
+	}
+
+	@Test(expected = IllegalArgumentException.class)
+	public void testGetPrimeSeriesWithNegativeArguments() {
+		mathUtils.getPrimeSeries(-13);
+	}
 }
