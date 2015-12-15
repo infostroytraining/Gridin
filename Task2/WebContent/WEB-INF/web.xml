@@ -11,10 +11,24 @@
   </welcome-file-list>
   <servlet>
     <servlet-name>Registration</servlet-name>
-    <servlet-class>com.infostroy.UserServlet</servlet-class>
+    <servlet-class>com.infostroy.web.servlet.UserServlet</servlet-class>
   </servlet>
   <servlet-mapping>
     <servlet-name>Registration</servlet-name>
     <url-pattern>/</url-pattern>
   </servlet-mapping>
+  
+  	<listener>
+		<listener-class>com.infostroy.web.listener.ContextListener</listener-class>
+	</listener>
+
+	<context-param>
+		<param-name>storage</param-name>
+		<param-value>db</param-value>
+	</context-param>
+
+	<error-page>
+		<error-code>500</error-code>
+		<location>/error.jsp</location>
+	</error-page>
 </web-app>

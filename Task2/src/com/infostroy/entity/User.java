@@ -4,7 +4,7 @@ import java.awt.Image;
 
 public class User {
 
-	private String id;
+	private int id;
 
 	private String firstName;
 
@@ -16,11 +16,18 @@ public class User {
 
 	private Image avatar;
 
-	public String getId() {
+	public User(String firstName, String lastName, String email, String password, String avatar) {
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.email = email;
+		this.password = password;
+	}
+
+	public int getId() {
 		return id;
 	}
 
-	public void setId(String id) {
+	public void setId(int id) {
 		this.id = id;
 	}
 

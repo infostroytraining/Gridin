@@ -27,9 +27,7 @@ CaptchasDotNet captchas = new CaptchasDotNet(
 //  );
 %>
 <form action="" method="POST">
-<label for="name">First Name</label>
-<input id="name" name="name" />
-<br/>
+<label for="name">First Name</label> <input id="name" name="name" /> <br/>
 <br/>
 <label for="lastName">Last Name</label>
 <input id="lastName" name="lastName" />

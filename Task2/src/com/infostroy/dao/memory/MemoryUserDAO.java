@@ -1,24 +1,22 @@
 package com.infostroy.dao.memory;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 import com.infostroy.dao.UserDAO;
+import com.infostroy.dao.storage.UserStorage;
 import com.infostroy.entity.User;
 
 public class MemoryUserDAO implements UserDAO {
 
-	List<User> users = new ArrayList<>();
+	private UserStorage storage;
+
+	public MemoryUserDAO(UserStorage storage) {
+		this.storage = storage;
+	}
 
 	@Override
 	public User create(User object) {
-		if (!users.contains(object)) {
-			object.setId(UUID.randomUUID().toString());
-			users.add(object);
-			return object;
-		}
-		return null;
+		return storage.add(object);
 	}
 
 	@Override
@@ -36,5 +34,10 @@ public class MemoryUserDAO implements UserDAO {
 	public boolean delete(int id) {
 		// TODO Auto-generated method stub
 		return false;
+	}
+
+	@Override
+	public List<User> getAll() {
+		return storage.all();
 	}
 }
