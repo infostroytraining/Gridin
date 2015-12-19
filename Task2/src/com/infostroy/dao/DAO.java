@@ -9,11 +9,11 @@ public interface DAO<T> {
 
 	T create(T object) throws DAOException;
 
-	T get(int id);
+	T get(int id) throws DAOException;
 
-	T update(T object);
+	T update(T object) throws DAOException;
 
-	boolean delete(int id);
+	boolean delete(int id) throws DAOException;
 
-	List<User> getAll();
+	List<User> getAll() throws DAOException;
 }

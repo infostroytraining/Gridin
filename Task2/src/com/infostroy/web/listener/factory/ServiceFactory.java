@@ -27,12 +27,13 @@ public class ServiceFactory {
 			logger.fatal("Could initialize application. Source type is null or empty");
 			throw new IllegalArgumentException();
 		}
-		if (type.equals(MEMORY)) {
+		switch (type) {
+		case MEMORY:
 			return initMemoryService();
-		} else if (type.equals(DB)) {
+		case DB:
 			loadPostgreDriver();
 			return initTransactionalService();
-		} else {
+		default:
 			logger.fatal("Could initialize application with source type {}", type);
 			throw new ServiceConfigurationError("Could initialize application with source type [" + type + "]");
 		}
