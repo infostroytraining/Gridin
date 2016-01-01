@@ -1,6 +1,7 @@
 package com.infostroy.filter;
 
 import java.io.File;
+import java.util.Objects;
 
 public class SizeFilter extends Filter {
 
@@ -16,7 +17,7 @@ public class SizeFilter extends Filter {
 
     @Override
     public boolean currentAccept(File file) {
-	if (file != null) {
+	if (Objects.nonNull(file)) {
 	    long fileSize = file.length();
 	    return fileSize < maxSize & fileSize > minSize;
 	}

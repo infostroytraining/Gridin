@@ -1,6 +1,7 @@
 package com.infostroy.filter;
 
 import java.io.File;
+import java.util.Objects;
 
 import com.infostroy.filter.exception.AcceptException;
 
@@ -14,7 +15,7 @@ public abstract class Filter {
 
     public boolean accept(File file) throws AcceptException {
 	boolean result = currentAccept(file);
-	if (nextFilter != null && result) {
+	if (Objects.nonNull(nextFilter) && result) {
 	    return nextFilter.accept(file);
 	}
 	return result;

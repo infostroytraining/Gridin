@@ -1,39 +1,36 @@
 package com.infostroy.filter;
 
 import java.io.File;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Objects;
+import java.util.TimeZone;
 
 import com.infostroy.filter.exception.AcceptException;
 
 public class DateFilter extends Filter {
 
-    private Date startDate;
+    private LocalDate startDate;
 
-    private Date endDate;
+    private LocalDate endDate;
 
-    private SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
+    private DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("dd.MM.yyyy");
 
-    public DateFilter(Filter nextFilter, String startDate, String endDate) throws ParseException {
+    public DateFilter(Filter nextFilter, String startDate, String endDate) {
 	super(nextFilter);
-	this.startDate = dateFormat.parse(startDate);
-	this.endDate = dateFormat.parse(endDate);
+	this.startDate = LocalDate.parse(startDate, dateFormat);
+	this.endDate = LocalDate.parse(endDate, dateFormat);
     }
 
     @Override
     public boolean currentAccept(File file) throws AcceptException {
-	if (file != null) {
-	    long lastModified = file.lastModified();
-	    String lastModifiedFormat = dateFormat.format(lastModified);
-	    Date lastModifiedDate = null;
-	    try {
-		lastModifiedDate = dateFormat.parse(lastModifiedFormat);
-	    } catch (ParseException e) {
-		e.printStackTrace();
-		throw new AcceptException(e);
-	    }
-	    return lastModifiedDate.after(startDate) && lastModifiedDate.before(endDate);
+	if (Objects.nonNull(file)) {
+	    LocalDate lastModifiedDate = LocalDateTime
+	            .ofInstant(Instant.ofEpochMilli(file.lastModified()), TimeZone.getDefault().toZoneId())
+	            .toLocalDate();
+	    return lastModifiedDate.isAfter(startDate) && lastModifiedDate.isBefore(endDate);
 	}
 	return false;
     }

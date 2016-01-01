@@ -1,6 +1,7 @@
 package com.infostroy.filter;
 
 import java.io.File;
+import java.util.Objects;
 
 import com.google.common.io.Files;
 
@@ -15,7 +16,7 @@ public class NameFilter extends Filter {
 
     @Override
     public boolean currentAccept(File file) {
-	if (file != null) {
+	if (Objects.nonNull(file)) {
 	    String fileName = Files.getNameWithoutExtension(file.getName());
 	    return fileName.startsWith(name);
 	}

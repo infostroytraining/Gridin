@@ -1,10 +1,10 @@
 package com.infostroy;
 
 import java.io.File;
-import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 import java.util.Scanner;
 
 import com.infostroy.filter.DateFilter;
@@ -16,44 +16,46 @@ import com.infostroy.filter.exception.AcceptException;
 
 public class FileFinder {
 
-    public static void main(String[] args) throws AcceptException, ParseException {
-	Scanner scanner = new Scanner(System.in);
-	while (true) {
-	    Filter filter = createFilter(scanner);
+    public static void main(String[] args) throws AcceptException {
+	try (Scanner scanner = new Scanner(System.in)) {
+	    while (true) {
+		Filter filter = createFilter(scanner);
+		if (Objects.nonNull(filter)) {
+		    File file = null;
+		    do {
+			System.out.println("Укажите каталог поиска:");
+			String folder = scanner.next();
+			file = new File(folder);
+		    } while (!file.isDirectory());
+		    List<File> files = Arrays.asList(file.listFiles());
 
-	    System.out.println("Укажите каталог поиска:");
-	    String folder = scanner.next();
-	    File file = new File(folder);
-
-	    List<File> files = Arrays.asList(file.listFiles());
-
-	    System.out.println(files);
-	    List<File> result = new ArrayList<>();
-	    if (filter != null) {
-		for (File current : files) {
-		    if (filter.accept(current)) {
-			result.add(current);
+		    System.out.println(files);
+		    List<File> result = new ArrayList<>();
+		    for (File current : files) {
+			if (filter.accept(current)) {
+			    result.add(current);
+			}
 		    }
+		    System.out.println(result);
+		    System.out.println("Начать поиск заново? (y/n)");
+		    String doAgain = scanner.next();
+		    if (doAgain.length() == 1 && doAgain.charAt(0) == 'n') {
+			break;
+		    }
+		} else {
+		    System.out.println("Вы не указали фильтр. Повторите ввод данных.");
 		}
 	    }
-	    System.out.println(result);
-	    System.out.println("Начать поиск заново? (y/n)");
-	    String doAgain = scanner.next();
-	    if (doAgain.charAt(0) == 'n') {
-		break;
-	    }
 	}
-	scanner.close();
     }
 
-    private static Filter createFilter(Scanner scanner) throws ParseException {
+    private static Filter createFilter(Scanner scanner) {
 	Filter filter = null;
 	System.out.println("Искать по имени файла ? (0/1)");
 	int filterName = scanner.nextInt();
 	if (filterName == 1) {
 	    System.out.println("Введите имя файла: ");
 	    String fileName = scanner.next();
-
 	    filter = new NameFilter(filter, fileName);
 	}
 	System.out.println("Искать по расширению файла ? (0/1)");
