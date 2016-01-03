@@ -4,15 +4,14 @@ import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.Map;
 
 public interface Analyzer {
 
-    Map<String, Integer> analyze(String fileName);
+    String getResultUsingJava8();
 
-    String getResultUsingJava8(String fileName, boolean parallelMode);
+    String getResultByImpl();
 
-    default String readDataFromFile(String fileName) {
+    default String[] readDataFromFile(String fileName) {
 	StringBuilder sb = new StringBuilder();
 	try {
 	    BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(fileName), "Cp1251"));
@@ -22,7 +21,8 @@ public interface Analyzer {
 	    }
 	    br.close();
 	} catch (IOException e) {
+	    System.out.println("Invalid file name");
 	}
-	return sb.toString();
+	return sb.toString().split(" ");
     }
 }

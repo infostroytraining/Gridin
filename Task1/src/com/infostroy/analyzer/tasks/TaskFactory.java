@@ -1,18 +1,22 @@
 package com.infostroy.analyzer.tasks;
 
+import com.infostroy.analyzer.tasks.enums.Task;
+
 public class TaskFactory {
 
-    public static Analyzer getTaskByName(String nameOfTask) {
-	switch (nameOfTask) {
-	case "length":
-	    return new Length();
-	case "duplicates":
-	    return new Duplicates();
-	case "frequency":
-	    return new Frequency();
+    private TaskFactory() {
+    }
+
+    public static Analyzer getTask(Task task, String fileName, boolean parallelMode) {
+	switch (task) {
+	case LENGTH:
+	    return new Length(fileName, parallelMode);
+	case DUPLICATES:
+	    return new Duplicates(fileName, parallelMode);
+	case FREQUENCY:
+	    return new Frequency(fileName, parallelMode);
 	default:
-	    break;
+	    return null;
 	}
-	return null;
     }
 }

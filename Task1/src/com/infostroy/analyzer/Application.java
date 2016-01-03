@@ -1,9 +1,12 @@
 package com.infostroy.analyzer;
 
+import java.util.Objects;
 import java.util.Scanner;
 
 import com.beust.jcommander.JCommander;
+import com.infostroy.analyzer.tasks.Analyzer;
 import com.infostroy.analyzer.tasks.TaskFactory;
+import com.infostroy.analyzer.tasks.TimeredTask;
 
 public class Application {
 
@@ -14,15 +17,19 @@ public class Application {
 	    while (true) {
 		String[] inputCommand = sc.nextLine().split(" ");
 		JCommander jCommander = new JCommander(jct, inputCommand);
+		if (jct.getExit()) {
+		    break;
+		}
 		input = jct.getInput();
 		if (jct.getHelp()) {
 		    jCommander.usage();
 		} else {
-		    long start = System.currentTimeMillis();
-		    System.out.println(
-		            TaskFactory.getTaskByName(jct.getTask()).getResultUsingJava8(input, jct.getParallel()));
-		    long end = System.currentTimeMillis();
-		    System.out.println("elapsed time: " + (end - start) + " millis");
+		    Analyzer task = TaskFactory.getTask(jct.getTask(), input, jct.getParallel());
+		    if (Objects.isNull(task)) {
+			System.out.println("Task not found. Try again.");
+		    } else {
+			TimeredTask.run(task::getResultUsingJava8);
+		    }
 		}
 	    }
 	}
